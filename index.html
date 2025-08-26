@@ -684,11 +684,11 @@
             <div class="logo">Practica<span>Ejercicios</span></div>
             <nav>
                 <ul>
-                    <li><a href="#" class="nav-link" data-page="home">Inicio</a></li>
+                    <li><a href="https://ayoubelouardy.github.io/Practicaejercicios/" target="_blank">Inicio</a></li>
                     <li><a href="#" class="nav-link" data-page="language">Lenguaje</a></li>
                     <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Matem-ticas/" target="_blank">Matemáticas</a></li>
-                    <li><a href="#" class="nav-link" data-page="science">Ciencias</a></li>
-                    <li><a href="#" class="nav-link" data-page="social">Sociales</a></li>
+                    <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Ciencias/" target="_blank">Ciencias</a></li>
+                    <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Ciencias-Sociales/" target="_blank">Sociales</a></li>
                 </ul>
             </nav>
             <div class="user-menu">
@@ -811,7 +811,7 @@
         </section>
         <section class="subject-page" id="language-page">
             <div class="container">
-                <a href="#" class="back-button nav-link" data-page="home"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+                <a href="https://ayoubelouardy.github.io/Practicaejercicios/" target="_blank" class="back-button"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
                 <div class="section-title">
                     <h2>Lenguaje</h2>
                     <p>Selecciona un área de lenguaje para practicar</p>
@@ -1033,7 +1033,7 @@
         </section>
         <section class="subject-page" id="science-page">
             <div class="container">
-                <a href="#" class="back-button nav-link" data-page="home"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+                <a href="https://ayoubelouardy.github.io/Practicaejercicios-Ciencias/" target="_blank" class="back-button"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
                 <div class="section-title">
                     <h2>Ciencias</h2>
                     <p>Próximamente: Ejercicios de ciencias</p>
@@ -1042,7 +1042,7 @@
         </section>
         <section class="subject-page" id="social-page">
             <div class="container">
-                <a href="#" class="back-button nav-link" data-page="home"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+                <a href="https://ayoubelouardy.github.io/Practicaejercicios-Ciencias-Sociales/" target="_blank" class="back-button"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
                 <div class="section-title">
                     <h2>Sociales</h2>
                     <p>Próximamente: Ejercicios de sociales</p>
@@ -1084,11 +1084,11 @@
                 <div class="footer-column">
                     <h3>Enlaces rápidos</h3>
                     <ul>
-                        <li><a href="#" class="nav-link" data-page="home">Inicio</a></li>
+                        <li><a href="https://ayoubelouardy.github.io/Practicaejercicios/" target="_blank">Inicio</a></li>
                         <li><a href="#" class="nav-link" data-page="language">Lenguaje</a></li>
                         <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Matem-ticas/" target="_blank">Matemáticas</a></li>
-                        <li><a href="#" class="nav-link" data-page="science">Ciencias</a></li>
-                        <li><a href="#" class="nav-link" data-page="social">Sociales</a></li>
+                        <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Ciencias/" target="_blank">Ciencias</a></li>
+                        <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Ciencias-Sociales/" target="_blank">Sociales</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -1278,8 +1278,8 @@
 
         // Navigation handling
         function showPage(pageId) {
-            // Skip math page as it links externally
-            if (pageId === 'math') return;
+            // Skip external links
+            if (['home', 'math', 'science', 'social'].includes(pageId)) return;
             document.querySelectorAll('.subject-page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -1352,7 +1352,7 @@
             // Initialize home page
             showPage('home');
 
-            // Navigation links (exclude math)
+            // Navigation links (only for language page)
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
