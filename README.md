@@ -686,7 +686,7 @@
                 <ul>
                     <li><a href="#" class="nav-link" data-page="home">Inicio</a></li>
                     <li><a href="#" class="nav-link" data-page="language">Lenguaje</a></li>
-                    <li><a href="#" class="nav-link" data-page="math">Matemáticas</a></li>
+                    <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Matem-ticas/" target="_blank">Matemáticas</a></li>
                     <li><a href="#" class="nav-link" data-page="science">Ciencias</a></li>
                     <li><a href="#" class="nav-link" data-page="social">Sociales</a></li>
                 </ul>
@@ -1023,10 +1023,11 @@
         </section>
         <section class="subject-page" id="math-page">
             <div class="container">
-                <a href="#" class="back-button nav-link" data-page="home"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+                <a href="https://ayoubelouardy.github.io/Practicaejercicios-Matem-ticas/" target="_blank" class="back-button"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
                 <div class="section-title">
                     <h2>Matemáticas</h2>
-                    <p>Próximamente: Ejercicios de matemáticas</p>
+                    <p>Visita nuestra página de Matemáticas para practicar</p>
+                    <a href="https://ayoubelouardy.github.io/Practicaejercicios-Matem-ticas/" target="_blank" class="btn btn-language">Ir a Matemáticas</a>
                 </div>
             </div>
         </section>
@@ -1085,7 +1086,7 @@
                     <ul>
                         <li><a href="#" class="nav-link" data-page="home">Inicio</a></li>
                         <li><a href="#" class="nav-link" data-page="language">Lenguaje</a></li>
-                        <li><a href="#" class="nav-link" data-page="math">Matemáticas</a></li>
+                        <li><a href="https://ayoubelouardy.github.io/Practicaejercicios-Matem-ticas/" target="_blank">Matemáticas</a></li>
                         <li><a href="#" class="nav-link" data-page="science">Ciencias</a></li>
                         <li><a href="#" class="nav-link" data-page="social">Sociales</a></li>
                     </ul>
@@ -1277,6 +1278,8 @@
 
         // Navigation handling
         function showPage(pageId) {
+            // Skip math page as it links externally
+            if (pageId === 'math') return;
             document.querySelectorAll('.subject-page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -1349,7 +1352,7 @@
             // Initialize home page
             showPage('home');
 
-            // Navigation links
+            // Navigation links (exclude math)
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
