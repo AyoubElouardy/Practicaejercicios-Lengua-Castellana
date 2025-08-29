@@ -45,7 +45,7 @@
             background: linear-gradient(135deg, var(--language-color), #4682b4);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px, 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -900,67 +900,570 @@
     </footer>
 
     <script>
-        // Exercise data (50+ per category and level)
+        // Exercise data (50 per category and level)
         const exercises = {
             grammar: {
-                basic: [
-                    {id: 1, question: "Identifica el sustantivo en: 'El perro corre en el parque'.", options: [{text: "perro", correct: true}, {text: "corre", correct: false}, {text: "en", correct: false}, {text: "parque", correct: true}], feedbackCorrect: "¡Correcto! Los sustantivos son 'perro' y 'parque'.", feedbackIncorrect: "Incorrecto. Los sustantivos son 'perro' y 'parque'."},
-                    {id: 2, question: "¿Cuál es el verbo en: 'María estudia matemáticas'?", options: [{text: "María", correct: false}, {text: "estudia", correct: true}, {text: "matemáticas", correct: false}], feedbackCorrect: "¡Correcto! 'Estudia' es el verbo.", feedbackIncorrect: "Incorrecto. 'Estudia' es el verbo."},
-                    {id: 3, question: "Selecciona el adjetivo en: 'La casa azul es grande'.", options: [{text: "casa", correct: false}, {text: "azul", correct: true}, {text: "es", correct: false}, {text: "grande", correct: true}], feedbackCorrect: "¡Correcto! Los adjetivos son 'azul' y 'grande'.", feedbackIncorrect: "Incorrecto. Los adjetivos son 'azul' y 'grande'."},
-                    {id: 4, question: "Identifica el artículo en: 'El niño juega con una pelota'.", options: [{text: "El", correct: true}, {text: "niño", correct: false}, {text: "una", correct: true}, {text: "pelota", correct: false}], feedbackCorrect: "¡Correcto! Los artículos son 'El' y 'una'.", feedbackIncorrect: "Incorrecto. Los artículos son 'El' y 'una'."},
-                    {id: 5, question: "¿Cuál es el pronombre en: 'Ella canta muy bien'?", options: [{text: "Ella", correct: true}, {text: "canta", correct: false}, {text: "muy", correct: false}, {text: "bien", correct: false}], feedbackCorrect: "¡Correcto! 'Ella' es el pronombre.", feedbackIncorrect: "Incorrecto. 'Ella' es el pronombre."},
-                    {id: 6, question: "Selecciona la preposición en: 'El libro está sobre la mesa'.", options: [{text: "El", correct: false}, {text: "libro", correct: false}, {text: "está", correct: false}, {text: "sobre", correct: true}], feedbackCorrect: "¡Correcto! 'Sobre' es la preposición.", feedbackIncorrect: "Incorrecto. 'Sobre' es la preposición."},
-                    {id: 7, question: "Identifica el adverbio en: 'Corre rápidamente hacia la meta'.", options: [{text: "Corre", correct: false}, {text: "rápidamente", correct: true}, {text: "hacia", correct: false}, {text: "meta", correct: false}], feedbackCorrect: "¡Correcto! 'Rápidamente' es el adverbio.", feedbackIncorrect: "Incorrecto. 'Rápidamente' es el adverbio."},
-                    {id: 8, question: "¿Cuál es la conjunción en: 'Estudia y trabaja todos los días'?", options: [{text: "Estudia", correct: false}, {text: "y", correct: true}, {text: "trabaja", correct: false}, {text: "días", correct: false}], feedbackCorrect: "¡Correcto! 'Y' es la conjunción.", feedbackIncorrect: "Incorrecto. 'Y' es la conjunción."},
-                    {id: 9, question: "Selecciona el sustantivo propio en: 'Juan vive en Madrid'.", options: [{text: "Juan", correct: true}, {text: "vive", correct: false}, {text: "en", correct: false}, {text: "Madrid", correct: true}], feedbackCorrect: "¡Correcto! 'Juan' y 'Madrid' son sustantivos propios.", feedbackIncorrect: "Incorrecto. 'Juan' y 'Madrid' son sustantivos propios."},
-                    {id: 10, question: "Identifica el verbo copulativo en: 'El cielo está despejado'.", options: [{text: "cielo", correct: false}, {text: "está", correct: true}, {text: "despejado", correct: false}], feedbackCorrect: "¡Correcto! 'Está' es el verbo copulativo.", feedbackIncorrect: "Incorrecto. 'Está' es el verbo copulativo."},
-                    // 40 ejercicios más para gramática básica...
-                ],
-                intermediate: [
-                    {id: 1, question: "Conjuga el verbo 'amar' en presente de subjuntivo para 'yo'.", options: [{text: "ame", correct: true}, {text: "amo", correct: false}, {text: "amara", correct: false}, {text: "amase", correct: false}], feedbackCorrect: "¡Correcto! 'Ame' es la conjugación correcta.", feedbackIncorrect: "Incorrecto. La forma correcta es 'ame'."},
-                    {id: 2, question: "Identifica el complemento directo en: 'El niño lee un libro interesante'.", options: [{text: "El niño", correct: false}, {text: "lee", correct: false}, {text: "un libro interesante", correct: true}], feedbackCorrect: "¡Correcto! 'Un libro interesante' es el complemento directo.", feedbackIncorrect: "Incorrecto. 'Un libro interesante' es el complemento directo."},
-                    {id: 3, question: "¿Cuál es la voz pasiva de: 'El chef prepara la cena'?", options: [{text: "La cena es preparada por el chef", correct: true}, {text: "El chef es preparado por la cena", correct: false}, {text: "La cena prepara al chef", correct: false}], feedbackCorrect: "¡Correcto! 'La cena es preparada por el chef' es la voz pasiva.", feedbackIncorrect: "Incorrecto. La voz pasiva es 'La cena es preparada por el chef'."},
-                    {id: 4, question: "Selecciona la oración compuesta correcta.", options: [{text: "Estudia porque quiere aprender.", correct: true}, {text: "Estudia, quiere aprender.", correct: false}, {text: "Estudia y.", correct: false}], feedbackCorrect: "¡Correcto! 'Estudia porque quiere aprender' es una oración compuesta.", feedbackIncorrect: "Incorrecto. 'Estudia porque quiere aprender' es la oración compuesta correcta."},
-                    {id: 5, question: "Identifica el modo verbal en: 'Ojalá llueva mañana'.", options: [{text: "Indicativo", correct: false}, {text: "Subjuntivo", correct: true}, {text: "Imperativo", correct: false}], feedbackCorrect: "¡Correcto! 'Llueva' está en subjuntivo.", feedbackIncorrect: "Incorrecto. 'Llueva' está en subjuntivo."},
-                    // 45 ejercicios más para gramática intermedia...
-                ],
-                advanced: [
-                    {id: 1, question: "Analiza sintácticamente: 'El libro que me prestaste es interesante'.", options: [{text: "Oración compuesta subordinada adjetiva", correct: true}, {text: "Oración simple", correct: false}, {text: "Oración compuesta coordinada", correct: false}], feedbackCorrect: "¡Correcto! Es una oración compuesta subordinada adjetiva.", feedbackIncorrect: "Incorrecto. Es una oración compuesta subordinada adjetiva."},
-                    {id: 2, question: "Identifica la figura retórica en: 'Tus ojos son dos luceros'.", options: [{text: "Metáfora", correct: true}, {text: "Símil", correct: false}, {text: "Hipérbole", correct: false}], feedbackCorrect: "¡Correcto! Es una metáfora.", feedbackIncorrect: "Incorrecto. Es una metáfora."},
-                    {id: 3, question: "¿Cuál es la función del 'que' en: 'Deseo que vengas pronto'?", options: [{text: "Nexo subordinante", correct: true}, {text: "Pronombre relativo", correct: false}, {text: "Pronombre interrogativo", correct: false}], feedbackCorrect: "¡Correcto! 'Que' actúa como nexo subordinante.", feedbackIncorrect: "Incorrecto. 'Que' actúa como nexo subordinante."},
-                    // 47 ejercicios más para gramática avanzada...
-                ]
+                basic: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `Identifica el sustantivo en la oración: <strong>${i % 2 === 0 ? `El gato duerme en la alfombra.` : `La casa es grande.`}</strong>`,
+                            options: i % 2 === 0 ? [
+                                { text: "duerme", correct: false },
+                                { text: "gato", correct: true },
+                                { text: "en", correct: false },
+                                { text: "alfombra", correct: true }
+                            ] : [
+                                { text: "es", correct: false },
+                                { text: "casa", correct: true },
+                                { text: "grande", correct: false },
+                                { text: "la", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! El sustantivo es ${i % 2 === 0 ? '"gato" y "alfombra"' : '"casa"'}.`,
+                            feedbackIncorrect: `Incorrecto. El sustantivo es ${i % 2 === 0 ? '"gato" y "alfombra"' : '"casa"'}. Un sustantivo nombra personas, lugares o cosas.`
+                        },
+                        {
+                            question: `Conjuga el verbo "cantar" en ${i % 2 === 0 ? `pretérito perfecto para "yo"` : `futuro para "tú"`}.`,
+                            options: i % 2 === 0 ? [
+                                { text: "he cantado", correct: true },
+                                { text: "canté", correct: false },
+                                { text: "canto", correct: false },
+                                { text: "había cantado", correct: false }
+                            ] : [
+                                { text: "cantarás", correct: true },
+                                { text: "cantaste", correct: false },
+                                { text: "cantarías", correct: false },
+                                { text: "cantando", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! La conjugación es ${i % 2 === 0 ? '"he cantado"' : '"cantarás"'}.`,
+                            feedbackIncorrect: `Incorrecto. La conjugación correcta es ${i % 2 === 0 ? '"he cantado"' : '"cantarás"'}.`
+                        },
+                        {
+                            question: `Identifica la función sintáctica del sujeto en: <strong>${i % 2 === 0 ? `Los niños juegan en el parque.` : `María compró un libro nuevo.`}</strong>`,
+                            options: i % 2 === 0 ? [
+                                { text: "Los niños", correct: true },
+                                { text: "juegan", correct: false },
+                                { text: "en el parque", correct: false },
+                                { text: "parque", correct: false }
+                            ] : [
+                                { text: "María", correct: true },
+                                { text: "compró", correct: false },
+                                { text: "un libro", correct: false },
+                                { text: "nuevo", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! El sujeto es ${i % 2 === 0 ? '"Los niños"' : '"María"'}.`,
+                            feedbackIncorrect: `Incorrecto. El sujeto realiza la acción del verbo y es ${i % 2 === 0 ? '"Los niños"' : '"María"'}.`
+                        },
+                        {
+                            question: `¿Cuál es el verbo en: '${i % 2 === 0 ? `María estudia matemáticas` : `El perro corre en el parque`}'?`,
+                            options: i % 2 === 0 ? [
+                                { text: "María", correct: false },
+                                { text: "estudia", correct: true },
+                                { text: "matemáticas", correct: false }
+                            ] : [
+                                { text: "El", correct: false },
+                                { text: "corre", correct: true },
+                                { text: "parque", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! El verbo es ${i % 2 === 0 ? '"estudia"' : '"corre"'}.`,
+                            feedbackIncorrect: `Incorrecto. El verbo es ${i % 2 === 0 ? '"estudia"' : '"corre"'}.`
+                        },
+                        {
+                            question: `Selecciona el adjetivo en: '${i % 2 === 0 ? `La casa azul es grande` : `El libro interesante está en la mesa`}'.`,
+                            options: i % 2 === 0 ? [
+                                { text: "casa", correct: false },
+                                { text: "azul", correct: true },
+                                { text: "es", correct: false },
+                                { text: "grande", correct: true }
+                            ] : [
+                                { text: "libro", correct: false },
+                                { text: "interesante", correct: true },
+                                { text: "está", correct: false },
+                                { text: "mesa", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! El adjetivo es ${i % 2 === 0 ? '"azul" y "grande"' : '"interesante"'}.`,
+                            feedbackIncorrect: `Incorrecto. El adjetivo es ${i % 2 === 0 ? '"azul" y "grande"' : '"interesante"'}.`
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                }),
+                intermediate: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `Conjuga el verbo "amar" en presente de subjuntivo para "yo".`,
+                            options: [
+                                { text: "ame", correct: true },
+                                { text: "amo", correct: false },
+                                { text: "amara", correct: false },
+                                { text: "amase", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Ame' es la conjugación correcta.",
+                            feedbackIncorrect: "Incorrecto. La forma correcta es 'ame'."
+                        },
+                        {
+                            question: `Identifica el complemento directo en: '${i % 2 === 0 ? `El niño lee un libro interesante` : `María compra una manzana`}'.`,
+                            options: i % 2 === 0 ? [
+                                { text: "El niño", correct: false },
+                                { text: "lee", correct: false },
+                                { text: "un libro interesante", correct: true }
+                            ] : [
+                                { text: "María", correct: false },
+                                { text: "compra", correct: false },
+                                { text: "una manzana", correct: true }
+                            ],
+                            feedbackCorrect: `¡Correcto! El complemento directo es ${i % 2 === 0 ? '"un libro interesante"' : '"una manzana"'}.`,
+                            feedbackIncorrect: `Incorrecto. El complemento directo es ${i % 2 === 0 ? '"un libro interesante"' : '"una manzana"'}.`
+                        },
+                        {
+                            question: `¿Cuál es la voz pasiva de: '${i % 2 === 0 ? `El chef prepara la cena` : `Los niños rompieron el jarrón`}'?`,
+                            options: i % 2 === 0 ? [
+                                { text: "La cena es preparada por el chef", correct: true },
+                                { text: "El chef es preparado por la cena", correct: false },
+                                { text: "La cena prepara al chef", correct: false }
+                            ] : [
+                                { text: "El jarrón fue roto por los niños", correct: true },
+                                { text: "Los niños fueron rotos por el jarrón", correct: false },
+                                { text: "El jarrón rompió a los niños", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! La voz pasiva es ${i % 2 === 0 ? '"La cena es preparada por el chef"' : '"El jarrón fue roto por los niños"'}.`,
+                            feedbackIncorrect: `Incorrecto. La voz pasiva es ${i % 2 === 0 ? '"La cena es preparada por el chef"' : '"El jarrón fue roto por los niños"'}.`
+                        },
+                        {
+                            question: `Selecciona la oración compuesta correcta.`,
+                            options: [
+                                { text: "Estudia porque quiere aprender.", correct: true },
+                                { text: "Estudia, quiere aprender.", correct: false },
+                                { text: "Estudia y.", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Estudia porque quiere aprender' es una oración compuesta.",
+                            feedbackIncorrect: "Incorrecto. 'Estudia porque quiere aprender' es la oración compuesta correcta."
+                        },
+                        {
+                            question: `Identifica el modo verbal en: '${i % 2 === 0 ? `Ojalá llueva mañana` : `Espero que vengas a la fiesta`}'.`,
+                            options: [
+                                { text: "Indicativo", correct: false },
+                                { text: "Subjuntivo", correct: true },
+                                { text: "Imperativo", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! El verbo está en subjuntivo.",
+                            feedbackIncorrect: "Incorrecto. El verbo está en subjuntivo."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                }),
+                advanced: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `Analiza sintácticamente: '${i % 2 === 0 ? `El libro que me prestaste es interesante` : `La casa donde nací fue vendida`}'.`,
+                            options: [
+                                { text: "Oración compuesta subordinada adjetiva", correct: true },
+                                { text: "Oración simple", correct: false },
+                                { text: "Oración compuesta coordinada", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Es una oración compuesta subordinada adjetiva.",
+                            feedbackIncorrect: "Incorrecto. Es una oración compuesta subordinada adjetiva."
+                        },
+                        {
+                            question: `Identifica la figura retórica en: '${i % 2 === 0 ? `Tus ojos son dos luceros` : `El tiempo es oro`}'.`,
+                            options: [
+                                { text: "Metáfora", correct: true },
+                                { text: "Símil", correct: false },
+                                { text: "Hipérbole", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Es una metáfora.",
+                            feedbackIncorrect: "Incorrecto. Es una metáfora."
+                        },
+                        {
+                            question: `¿Cuál es la función del 'que' en: '${i % 2 === 0 ? `Deseo que vengas pronto` : `El libro que leíste es mío`}'?`,
+                            options: i % 2 === 0 ? [
+                                { text: "Nexo subordinante", correct: true },
+                                { text: "Pronombre relativo", correct: false },
+                                { text: "Pronombre interrogativo", correct: false }
+                            ] : [
+                                { text: "Nexo subordinante", correct: false },
+                                { text: "Pronombre relativo", correct: true },
+                                { text: "Pronombre interrogativo", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! 'Que' actúa como ${i % 2 === 0 ? 'nexo subordinante' : 'pronombre relativo'}.`,
+                            feedbackIncorrect: `Incorrecto. 'Que' actúa como ${i % 2 === 0 ? 'nexo subordinante' : 'pronombre relativo'}.`
+                        },
+                        {
+                            question: `Identifica el tipo de sintagma subrayado: '${i % 2 === 0 ? `El coche azul` : `Corrió rápidamente`}'.`,
+                            options: i % 2 === 0 ? [
+                                { text: "Sintagma nominal", correct: true },
+                                { text: "Sintagma verbal", correct: false },
+                                { text: "Sintagma adjetival", correct: false }
+                            ] : [
+                                { text: "Sintagma nominal", correct: false },
+                                { text: "Sintagma verbal", correct: false },
+                                { text: "Sintagma adverbial", correct: true }
+                            ],
+                            feedbackCorrect: `¡Correcto! Es un ${i % 2 === 0 ? 'sintagma nominal' : 'sintagma adverbial'}.`,
+                            feedbackIncorrect: `Incorrecto. Es un ${i % 2 === 0 ? 'sintagma nominal' : 'sintagma adverbial'}.`
+                        },
+                        {
+                            question: `¿Qué tipo de complemento es '${i % 2 === 0 ? `en la mesa` : `con alegría`}' en: '${i % 2 === 0 ? `El libro está en la mesa` : `Cantó con alegría`}'?`,
+                            options: i % 2 === 0 ? [
+                                { text: "Complemento circunstancial de lugar", correct: true },
+                                { text: "Complemento directo", correct: false },
+                                { text: "Complemento indirecto", correct: false }
+                            ] : [
+                                { text: "Complemento circunstancial de modo", correct: true },
+                                { text: "Complemento directo", correct: false },
+                                { text: "Complemento indirecto", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! Es un ${i % 2 === 0 ? 'complemento circunstancial de lugar' : 'complemento circunstancial de modo'}.`,
+                            feedbackIncorrect: `Incorrecto. Es un ${i % 2 === 0 ? 'complemento circunstancial de lugar' : 'complemento circunstancial de modo'}.`
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                })
             },
             spelling: {
-                basic: [
-                    {id: 1, question: "¿Cuál está bien escrita?", options: [{text: "haber", correct: true}, {text: "haver", correct: false}, {text: "habier", correct: false}], feedbackCorrect: "¡Correcto! 'Haber' es la forma correcta.", feedbackIncorrect: "Incorrecto. 'Haber' es la forma correcta."},
-                    {id: 2, question: "Selecciona la palabra correcta.", options: [{text: "vaca", correct: true}, {text: "baca", correct: false}, {text: "vaka", correct: false}], feedbackCorrect: "¡Correcto! 'Vaca' es la forma correcta.", feedbackIncorrect: "Incorrecto. 'Vaca' es la forma correcta."},
-                    {id: 3, question: "¿Cómo se escribe correctamente?", options: [{text: "cebolla", correct: true}, {text: "sebolla", correct: false}, {text: "ceboya", correct: false}], feedbackCorrect: "¡Correcto! 'Cebolla' es la forma correcta.", feedbackIncorrect: "Incorrecto. 'Cebolla' es la forma correcta."},
-                    // 47 ejercicios más para ortografía básica...
-                ],
-                intermediate: [
-                    {id: 1, question: "¿Cuál lleva tilde?", options: [{text: "sábado", correct: true}, {text: "sabado", correct: false}, {text: "sabadó", correct: false}], feedbackCorrect: "¡Correcto! 'Sábado' lleva tilde en la primera sílaba.", feedbackIncorrect: "Incorrecto. 'Sábado' lleva tilde en la primera sílaba."},
-                    {id: 2, question: "Selecciona la opción con puntuación correcta.", options: [{text: "Hola, ¿cómo estás?", correct: true}, {text: "Hola cómo estás?", correct: false}, {text: "Hola, cómo estás", correct: false}], feedbackCorrect: "¡Correcto! 'Hola, ¿cómo estás?' tiene la puntuación correcta.", feedbackIncorrect: "Incorrecto. 'Hola, ¿cómo estás?' tiene la puntuación correcta."},
-                    // 48 ejercicios más para ortografía intermedia...
-                ],
-                advanced: [
-                    {id: 1, question: "¿Cuál es la forma correcta?", options: [{text: "adquirir", correct: true}, {text: "adquirir", correct: false}, {text: "adquerir", correct: false}], feedbackCorrect: "¡Correcto! 'Adquirir' es la forma correcta.", feedbackIncorrect: "Incorrecto. 'Adquirir' es la forma correcta."},
-                    // 49 ejercicios más para ortografía avanzada...
-                ]
+                basic: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `¿Cuál está bien escrita?`,
+                            options: [
+                                { text: "haber", correct: true },
+                                { text: "haver", correct: false },
+                                { text: "habier", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Haber' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Haber' es la forma correcta."
+                        },
+                        {
+                            question: `Selecciona la palabra correcta.`,
+                            options: [
+                                { text: "vaca", correct: true },
+                                { text: "baca", correct: false },
+                                { text: "vaka", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Vaca' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Vaca' es la forma correcta."
+                        },
+                        {
+                            question: `¿Cómo se escribe correctamente?`,
+                            options: [
+                                { text: "cebolla", correct: true },
+                                { text: "sebolla", correct: false },
+                                { text: "ceboya", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Cebolla' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Cebolla' es la forma correcta."
+                        },
+                        {
+                            question: `¿Cuál es la ortografía correcta?`,
+                            options: [
+                                { text: "lluvia", correct: true },
+                                { text: "yuvia", correct: false },
+                                { text: "llubia", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Lluvia' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Lluvia' es la forma correcta."
+                        },
+                        {
+                            question: `Selecciona la opción correctamente escrita.`,
+                            options: [
+                                { text: "jirafa", correct: true },
+                                { text: "girafa", correct: false },
+                                { text: "jirapha", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Jirafa' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Jirafa' es la forma correcta."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                }),
+                intermediate: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `¿Cuál lleva tilde?`,
+                            options: [
+                                { text: "sábado", correct: true },
+                                { text: "sabado", correct: false },
+                                { text: "sabadó", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Sábado' lleva tilde en la primera sílaba.",
+                            feedbackIncorrect: "Incorrecto. 'Sábado' lleva tilde en la primera sílaba."
+                        },
+                        {
+                            question: `Selecciona la opción con puntuación correcta.`,
+                            options: [
+                                { text: "Hola, ¿cómo estás?", correct: true },
+                                { text: "Hola cómo estás?", correct: false },
+                                { text: "Hola, cómo estás", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Hola, ¿cómo estás?' tiene la puntuación correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Hola, ¿cómo estás?' tiene la puntuación correcta."
+                        },
+                        {
+                            question: `¿Dónde lleva tilde '${i % 2 === 0 ? `telefono` : `arbol`}'?`,
+                            options: i % 2 === 0 ? [
+                                { text: "teléfono", correct: true },
+                                { text: "telefóno", correct: false },
+                                { text: "telefono", correct: false }
+                            ] : [
+                                { text: "árbol", correct: true },
+                                { text: "arból", correct: false },
+                                { text: "arbol", correct: false }
+                            ],
+                            feedbackCorrect: `¡Correcto! Se escribe ${i % 2 === 0 ? '"teléfono"' : '"árbol"'}.`,
+                            feedbackIncorrect: `Incorrecto. Se escribe ${i % 2 === 0 ? '"teléfono"' : '"árbol"'}.`
+                        },
+                        {
+                            question: `Selecciona la frase con la puntuación correcta.`,
+                            options: [
+                                { text: "Ayer fui al mercado; compré frutas, verduras y pan.", correct: true },
+                                { text: "Ayer fui al mercado, compré frutas, verduras y pan.", correct: false },
+                                { text: "Ayer fui al mercado compré frutas, verduras y pan.", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! El punto y coma separa oraciones relacionadas.",
+                            feedbackIncorrect: "Incorrecto. Debe usarse punto y coma para separar oraciones relacionadas."
+                        },
+                        {
+                            question: `¿Cuál es la forma correcta?`,
+                            options: [
+                                { text: "adquirir", correct: true },
+                                { text: "adquerir", correct: false },
+                                { text: "adquirir", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Adquirir' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Adquirir' es la forma correcta."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                }),
+                advanced: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `¿Cuál es la forma correcta?`,
+                            options: [
+                                { text: "adquirir", correct: true },
+                                { text: "adquerir", correct: false },
+                                { text: "adquirir", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Adquirir' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Adquirir' es la forma correcta."
+                        },
+                        {
+                            question: `Selecciona la opción ortográficamente correcta.`,
+                            options: [
+                                { text: "incautar", correct: true },
+                                { text: "incautar", correct: false },
+                                { text: "incautar", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Incautar' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Incautar' es la forma correcta."
+                        },
+                        {
+                            question: `¿Cuál es la forma correcta de escribir esta palabra?`,
+                            options: [
+                                { text: "yacimiento", correct: true },
+                                { text: "llacimiento", correct: false },
+                                { text: "yacimiennto", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Yacimiento' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Yacimiento' es la forma correcta."
+                        },
+                        {
+                            question: `Selecciona la opción con la puntuación correcta para un diálogo.`,
+                            options: [
+                                { text: "—Hola —dijo Juan—, ¿cómo estás?", correct: true },
+                                { text: "Hola, dijo Juan, ¿cómo estás?", correct: false },
+                                { text: "—Hola —dijo Juan, ¿cómo estás?", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Los guiones se usan para introducir diálogos.",
+                            feedbackIncorrect: "Incorrecto. Los guiones se usan para introducir diálogos."
+                        },
+                        {
+                            question: `¿Cuál es la forma correcta?`,
+                            options: [
+                                { text: "exhaustivo", correct: true },
+                                { text: "exaustivo", correct: false },
+                                { text: "exahustivo", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! 'Exhaustivo' es la forma correcta.",
+                            feedbackIncorrect: "Incorrecto. 'Exhaustivo' es la forma correcta."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                })
             },
             reading: {
-                basic: [
-                    {id: 1, question: "Lee: 'María tiene un perro. El perro se llama Toby'. ¿Cómo se llama el perro?", options: [{text: "Toby", correct: true}, {text: "María", correct: false}, {text: "Perro", correct: false}], feedbackCorrect: "¡Correcto! El perro se llama Toby.", feedbackIncorrect: "Incorrecto. El perro se llama Toby."},
-                    // 49 ejercicios más para comprensión lectora básica...
-                ],
-                intermediate: [
-                    {id: 1, question: "Texto: 'La globalización ha permitido que personas de diferentes culturas se comuniquen e intercambien ideas. Esto ha enriquecido el conocimiento humano'. ¿Qué ha permitido la globalización?", options: [{text: "Comunicación entre culturas", correct: true}, {text: "Aislamiento cultural", correct: false}, {text: "Pérdida de identidad", correct: false}], feedbackCorrect: "¡Correcto! La globalización ha permitido la comunicación entre culturas.", feedbackIncorrect: "Incorrecto. La globalización ha permitido la comunicación entre culturas."},
-                    // 49 ejercicios más para comprensión lectora intermedia...
-                ],
-                advanced: [
-                    {id: 1, question: "Texto: 'La teoría de la relatividad, propuesta por Einstein, revolucionó la física al demostrar que el tiempo y el espacio son relativos y están interconectados'. ¿Qué demostró la teoría de la relatividad?", options: [{text: "El tiempo y el espacio son relativos", correct: true}, {text: "El tiempo es absoluto", correct: false}, {text: "El espacio es fijo", correct: false}], feedbackCorrect: "¡Correcto! Demostró que el tiempo y el espacio son relativos.", feedbackIncorrect: "Incorrecto. Demostró que el tiempo y el espacio son relativos."},
-                    // 49 ejercicios más para comprensión lectora avanzada...
-                ]
+                basic: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `Lee: 'María tiene un perro. El perro se llama Toby'. ¿Cómo se llama el perro?`,
+                            options: [
+                                { text: "Toby", correct: true },
+                                { text: "María", correct: false },
+                                { text: "Perro", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! El perro se llama Toby.",
+                            feedbackIncorrect: "Incorrecto. El perro se llama Toby."
+                        },
+                        {
+                            question: `Texto: 'Carlos va al colegio cada mañana. Allí aprende muchas cosas'. ¿Dónde aprende Carlos?`,
+                            options: [
+                                { text: "En el colegio", correct: true },
+                                { text: "En casa", correct: false },
+                                { text: "En el parque", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Carlos aprende en el colegio.",
+                            feedbackIncorrect: "Incorrecto. Carlos aprende en el colegio."
+                        },
+                        {
+                            question: `Lee: 'El sol calienta la Tierra. Por eso hace calor en verano'. ¿Por qué hace calor en verano?`,
+                            options: [
+                                { text: "Porque el sol calienta la Tierra", correct: true },
+                                { text: "Porque llueve mucho", correct: false },
+                                { text: "Porque es de noche", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Hace calor porque el sol calienta la Tierra.",
+                            feedbackIncorrect: "Incorrecto. Hace calor porque el sol calienta la Tierra."
+                        },
+                        {
+                            question: `Texto: 'Ana tiene tres manzanas. Le da una a Pedro. ¿Cuántas manzanas le quedan a Ana?'`,
+                            options: [
+                                { text: "Dos", correct: true },
+                                { text: "Tres", correct: false },
+                                { text: "Una", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! A Ana le quedan dos manzanas.",
+                            feedbackIncorrect: "Incorrecto. A Ana le quedan dos manzanas."
+                        },
+                        {
+                            question: `Lee: 'Los pájaros vuelan por el cielo. Construyen nidos en los árboles'. ¿Dónde construyen nidos los pájaros?`,
+                            options: [
+                                { text: "En los árboles", correct: true },
+                                { text: "En el cielo", correct: false },
+                                { text: "En el agua", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Los pájaros construyen nidos en los árboles.",
+                            feedbackIncorrect: "Incorrecto. Los pájaros construyen nidos en los árboles."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                }),
+                intermediate: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `Texto: 'La globalización ha permitido que personas de diferentes culturas se comuniquen e intercambien ideas. Esto ha enriquecido el conocimiento humano'. ¿Qué ha permitido la globalización?`,
+                            options: [
+                                { text: "Comunicación entre culturas", correct: true },
+                                { text: "Aislamiento cultural", correct: false },
+                                { text: "Pérdida de identidad", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! La globalización ha permitido la comunicación entre culturas.",
+                            feedbackIncorrect: "Incorrecto. La globalización ha permitido la comunicación entre culturas."
+                        },
+                        {
+                            question: `Lee: 'El cambio climático es uno de los mayores desafíos de nuestra era. Sus efectos se observan en el derretimiento de los polos y el aumento del nivel del mar'. ¿Qué efectos del cambio climático se mencionan?`,
+                            options: [
+                                { text: "Derretimiento de los polos y aumento del nivel del mar", correct: true },
+                                { text: "Aumento de la vegetación", correct: false },
+                                { text: "Disminución de la temperatura global", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Se mencionan el derretimiento de los polos y el aumento del nivel del mar.",
+                            feedbackIncorrect: "Incorrecto. Se mencionan el derretimiento de los polos y el aumento del nivel del mar."
+                        },
+                        {
+                            question: `Texto: 'La Revolución Industrial marcó un punto de inflexión en la historia humana. Introdujo la producción en masa y transformó las sociedades agrarias en industriales'. ¿Qué transformó la Revolución Industrial?`,
+                            options: [
+                                { text: "Sociedades agrarias en industriales", correct: true },
+                                { text: "Sociedades industriales en agrarias", correct: false },
+                                { text: "Sociedades urbanas en rurales", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Transformó sociedades agrarias en industriales.",
+                            feedbackIncorrect: "Incorrecto. Transformó sociedades agrarias en industriales."
+                        },
+                        {
+                            question: `Lee: 'La fotosíntesis es el proceso mediante el cual las plantas convierten la luz solar en energía. Este proceso es fundamental para la vida en la Tierra'. ¿Qué convierten las plantas en energía?`,
+                            options: [
+                                { text: "Luz solar", correct: true },
+                                { text: "Agua", correct: false },
+                                { text: "Minerales", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Las plantas convierten la luz solar en energía.",
+                            feedbackIncorrect: "Incorrecto. Las plantas convierten la luz solar en energía."
+                        },
+                        {
+                            question: `Texto: 'El arte abstracto no busca representar la realidad de forma fiel. En cambio, se centra en formas, colores y texturas para expresar emociones e ideas'. ¿En qué se centra el arte abstracto?`,
+                            options: [
+                                { text: "Formas, colores y texturas", correct: true },
+                                { text: "Representación fiel de la realidad", correct: false },
+                                { text: "Copiar obras clásicas", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! El arte abstracto se centra en formas, colores y texturas.",
+                            feedbackIncorrect: "Incorrecto. El arte abstracto se centra en formas, colores y texturas."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                }),
+                advanced: Array.from({ length: 50 }, (_, i) => {
+                    const types = [
+                        {
+                            question: `Texto: 'La teoría de la relatividad, propuesta por Einstein, revolucionó la física al demostrar que el tiempo y el espacio son relativos y están interconectados'. ¿Qué demostró la teoría de la relatividad?`,
+                            options: [
+                                { text: "El tiempo y el espacio son relativos", correct: true },
+                                { text: "El tiempo es absoluto", correct: false },
+                                { text: "El espacio es fijo", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Demostró que el tiempo y el espacio son relativos.",
+                            feedbackIncorrect: "Incorrecto. Demostró que el tiempo y el espacio son relativos."
+                        },
+                        {
+                            question: `Lee: 'El existencialismo plantea que la existencia precede a la esencia, lo que significa que los seres humanos primero existimos y luego definimos nuestro propósito through nuestras acciones y decisiones'. ¿Qué precede a qué según el existencialismo?`,
+                            options: [
+                                { text: "La existencia precede a la esencia", correct: true },
+                                { text: "La esencia precede a la existencia", correct: false },
+                                { text: "Ambas son simultáneas", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! La existencia precede a la esencia.",
+                            feedbackIncorrect: "Incorrecto. La existencia precede a la esencia."
+                        },
+                        {
+                            question: `Texto: 'La poesía modernista rompió con las formas tradicionales y buscó nuevas expresiones estéticas. Rubén Darío es considerado su máximo exponente en el mundo hispano'. ¿Quién es el máximo exponente del modernismo hispano?`,
+                            options: [
+                                { text: "Rubén Darío", correct: true },
+                                { text: "Pablo Neruda", correct: false },
+                                { text: "Federico García Lorca", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Rubén Darío es el máximo exponente del modernismo hispano.",
+                            feedbackIncorrect: "Incorrecto. Rubén Darío es el máximo exponente del modernismo hispano."
+                        },
+                        {
+                            question: `Lee: 'La filosofía kantiana propone que el conocimiento es el resultado de la interacción entre las percepciones sensibles y las categorías del entendimiento'. ¿De qué es resultado el conocimiento según Kant?`,
+                            options: [
+                                { text: "Interacción entre percepciones y categorías", correct: true },
+                                { text: "Solo de las percepciones sensibles", correct: false },
+                                { text: "Solo de las categorías del entendimiento", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Es resultado de la interacción entre percepciones y categorías.",
+                            feedbackIncorrect: "Incorrecto. Es resultado de la interacción entre percepciones y categorías."
+                        },
+                        {
+                            question: `Texto: 'El realismo mágico combina elementos realistas con elementos fantásticos, creando un mundo donde lo extraordinario se presenta como parte de la normalidad'. ¿Qué combina el realismo mágico?`,
+                            options: [
+                                { text: "Elementos realistas y fantásticos", correct: true },
+                                { text: "Solo elementos realistas", correct: false },
+                                { text: "Solo elementos fantásticos", correct: false }
+                            ],
+                            feedbackCorrect: "¡Correcto! Combina elementos realistas y fantásticos.",
+                            feedbackIncorrect: "Incorrecto. Combina elementos realistas y fantásticos."
+                        }
+                    ];
+                    
+                    return types[i % types.length];
+                })
             }
         };
 
@@ -1000,7 +1503,7 @@
         }
 
         function loadExercise(subject, level, exerciseId) {
-            const exercise = exercises[subject][level].find(ex => ex.id === exerciseId);
+            const exercise = exercises[subject][level][exerciseId - 1];
             const container = document.querySelector(`#${subject}-page #${subject}-${level}-exercises`);
             container.querySelector('.exercise-counter').textContent = exerciseId;
             container.querySelector('.exercise-question').innerHTML = exercise.question;
@@ -1073,7 +1576,7 @@
                     const subject = container.closest('.subject-page').id.split('-')[0];
                     const level = container.id.split('-')[1];
                     const exerciseId = parseInt(container.querySelector('.exercise-counter').textContent);
-                    const exercise = exercises[subject][level].find(ex => ex.id === exerciseId);
+                    const exercise = exercises[subject][level][exerciseId - 1];
                     
                     let isCorrect = false;
                     if (exercise.options) {
