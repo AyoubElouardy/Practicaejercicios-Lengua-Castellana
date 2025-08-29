@@ -1,8 +1,3 @@
-Corrección del Problema de Navegación entre Ejercicios
-
-He identificado y corregido el problema. El error estaba en la función loadExercise que no podía encontrar los ejercicios más allá del número 9. He reestructurado el código para que funcione correctamente con todos los 50 ejercicios.
-
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
