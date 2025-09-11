@@ -817,7 +817,7 @@
                     <p>Selecciona un área de lenguaje para practicar</p>
                 </div>
                 <div class="topics-grid">
-                    <div class="topic-card grammar">
+                    <div class="topic-card grammar Node: grammar">
                         <div class="topic-icon">✍️</div>
                         <div class="topic-content">
                             <h3>Gramática</h3>
@@ -881,6 +881,7 @@
                     </div>
                     <div class="exercise-question"></div>
                     <div class="options-container"></div>
+                    <input type="text" class="input-answer" style="display: none;">
                     <button class="btn btn-grammar check-answer-btn">Comprobar respuesta</button>
                     <button class="btn btn-grammar next-question-btn" style="display: none; background-color: var(--success-color);">Siguiente ejercicio</button>
                     <div class="exercise-feedback feedback-correct"></div>
@@ -955,6 +956,7 @@
                     </div>
                     <div class="exercise-question"></div>
                     <div class="options-container"></div>
+                    <input type="text" class="input-answer" style="display: none;">
                     <button class="btn btn-spelling check-answer-btn">Comprobar respuesta</button>
                     <button class="btn btn-spelling next-question-btn" style="display: none; background-color: var(--success-color);">Siguiente ejercicio</button>
                     <div class="exercise-feedback feedback-correct"></div>
@@ -1125,166 +1127,192 @@
             totalAnswers: 0
         };
 
-        // Exercise data (50+ per category and level)
+        // Exercise data (50 per category and level)
         const exercises = {
             grammar: {
-                basic: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Identifica el sustantivo en la oración: <strong>${i % 2 === 0 ? `El gato duerme en la alfombra.` : `La casa es grande.`}</strong>`,
-                    options: i % 2 === 0 ? [
-                        { text: "duerme", correct: false },
-                        { text: "gato", correct: true },
-                        { text: "en", correct: false },
-                        { text: "alfombra", correct: true }
-                    ] : [
-                        { text: "es", correct: false },
-                        { text: "casa", correct: true },
-                        { text: "grande", correct: false },
-                        { text: "la", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! El sustantivo es ${i % 2 === 0 ? '"gato" y "alfombra"' : '"casa"'}.`,
-                    feedbackIncorrect: `Incorrecto. El sustantivo es ${i % 2 === 0 ? '"gato" y "alfombra"' : '"casa"'}. Un sustantivo nombra personas, lugares o cosas.`
-                })),
-                intermediate: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Conjuga el verbo "cantar" en ${i % 2 === 0 ? `pretérito perfecto para "yo"` : `futuro para "tú"`}.`,
-                    options: i % 2 === 0 ? [
-                        { text: "he cantado", correct: true },
-                        { text: "canté", correct: false },
-                        { text: "canto", correct: false },
-                        { text: "había cantado", correct: false }
-                    ] : [
-                        { text: "cantarás", correct: true },
-                        { text: "cantaste", correct: false },
-                        { text: "cantarías", correct: false },
-                        { text: "cantando", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! La conjugación es ${i % 2 === 0 ? '"he cantado"' : '"cantarás"'}.`,
-                    feedbackIncorrect: `Incorrecto. La conjugación correcta es ${i % 2 === 0 ? '"he cantado"' : '"cantarás"'}.`
-                })),
-                advanced: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Identifica la función sintáctica del sujeto en: <strong>${i % 2 === 0 ? `Los niños juegan en el parque.` : `María compró un libro nuevo.`}</strong>`,
-                    options: i % 2 === 0 ? [
-                        { text: "Los niños", correct: true },
-                        { text: "juegan", correct: false },
-                        { text: "en el parque", correct: false },
-                        { text: "parque", correct: false }
-                    ] : [
-                        { text: "María", correct: true },
-                        { text: "compró", correct: false },
-                        { text: "un libro", correct: false },
-                        { text: "nuevo", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! El sujeto es ${i % 2 === 0 ? '"Los niños"' : '"María"'}.`,
-                    feedbackIncorrect: `Incorrecto. El sujeto realiza la acción del verbo y es ${i % 2 === 0 ? '"Los niños"' : '"María"'}.`
-                }))
+                basic: Array.from({ length: 50 }, (_, i) => {
+                    const sentences = [
+                        { sentence: "El sol brilla en el cielo.", answer: "sol", question: "Identifica el sustantivo principal." },
+                        { sentence: "Corro rápido en la pista.", answer: "corro", question: "Identifica el verbo." },
+                        { sentence: "La casa es grande.", answer: "grande", question: "Identifica el adjetivo." }
+                    ];
+                    const idx = i % sentences.length;
+                    return {
+                        id: i + 1,
+                        question: `En la oración: <strong>${sentences[idx].sentence}</strong> ${sentences[idx].question}`,
+                        options: [
+                            { text: sentences[idx].answer, correct: true },
+                            { text: sentences[(idx + 1) % sentences.length].answer, correct: false },
+                            { text: sentences[(idx + 2) % sentences.length].answer, correct: false },
+                            { text: "ninguno", correct: false }
+                        ],
+                        feedbackCorrect: `¡Correcto! "${sentences[idx].answer}" es la respuesta correcta.`,
+                        feedbackIncorrect: `Incorrecto. La respuesta correcta es "${sentences[idx].answer}".`
+                    };
+                }),
+                intermediate: Array.from({ length: 50 }, (_, i) => {
+                    const verbs = [
+                        { verb: "comer", tense: "pretérito perfecto (yo)", answer: "he comido" },
+                        { verb: "vivir", tense: "futuro (tú)", answer: "vivirás" },
+                        { verb: "ser", tense: "pretérito imperfecto (él)", answer: "era" }
+                    ];
+                    const idx = i % verbs.length;
+                    return {
+                        id: i + 1,
+                        question: `Conjuga el verbo "${verbs[idx].verb}" en ${verbs[idx].tense}.`,
+                        answer: verbs[idx].answer,
+                        options: null, // Text input
+                        feedbackCorrect: `¡Correcto! La conjugación es "${verbs[idx].answer}".`,
+                        feedbackIncorrect: `Incorrecto. La conjugación correcta es "${verbs[idx].answer}".`
+                    };
+                }),
+                advanced: Array.from({ length: 50 }, (_, i) => {
+                    const sentences = [
+                        { sentence: "Los estudiantes leen libros interesantes.", answer: "Los estudiantes", question: "Identifica el sujeto." },
+                        { sentence: "María compró flores ayer.", answer: "flores", question: "Identifica el objeto directo." },
+                        { sentence: "Caminamos por el parque tranquilo.", answer: "por el parque tranquilo", question: "Identifica el complemento circunstancial." }
+                    ];
+                    const idx = i % sentences.length;
+                    return {
+                        id: i + 1,
+                        question: `En la oración: <strong>${sentences[idx].sentence}</strong> ${sentences[idx].question}`,
+                        options: [
+                            { text: sentences[idx].answer, correct: true },
+                            { text: sentences[(idx + 1) % sentences.length].answer, correct: false },
+                            { text: sentences[(idx + 2) % sentences.length].answer, correct: false },
+                            { text: "ninguno", correct: false }
+                        ],
+                        feedbackCorrect: `¡Correcto! "${sentences[idx].answer}" es la respuesta correcta.`,
+                        feedbackIncorrect: `Incorrecto. La respuesta correcta es "${sentences[idx].answer}".`
+                    };
+                })
             },
             spelling: {
-                basic: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `¿Cuál es la palabra correctamente acentuada? <strong>${i % 2 === 0 ? `arbol / árbol / arból` : `camion / camión / camíon`}</strong>`,
-                    options: i % 2 === 0 ? [
-                        { text: "arbol", correct: false },
-                        { text: "árbol", correct: true },
-                        { text: "arból", correct: false }
-                    ] : [
-                        { text: "camion", correct: false },
-                        { text: "camión", correct: true },
-                        { text: "camíon", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! La palabra es ${i % 2 === 0 ? '"árbol"' : '"camión"'}.`,
-                    feedbackIncorrect: `Incorrecto. La palabra correcta es ${i % 2 === 0 ? '"árbol" (aguda con tilde en la última sílaba)' : '"camión" (aguda con tilde en la última sílaba)'}.`
-                })),
-                intermediate: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Coloca la puntuación correcta: <strong>${i % 2 === 0 ? `María fue al mercado compró frutas y verduras.` : `Juan estudia mucho siempre saca buenas notas.`}</strong>`,
-                    options: i % 2 === 0 ? [
-                        { text: "María fue al mercado, compró frutas y verduras.", correct: true },
-                        { text: "María fue al mercado compró, frutas y verduras.", correct: false },
-                        { text: "María fue al mercado; compró frutas y verduras.", correct: false }
-                    ] : [
-                        { text: "Juan estudia mucho, siempre saca buenas notas.", correct: true },
-                        { text: "Juan estudia mucho siempre, saca buenas notas.", correct: false },
-                        { text: "Juan estudia mucho; siempre saca buenas notas.", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! La oración correcta lleva una coma para separar las ideas.`,
-                    feedbackIncorrect: `Incorrecto. Se necesita una coma para separar las proposiciones coordinadas.`
-                })),
-                advanced: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Selecciona la palabra correctamente escrita: <strong>${i % 2 === 0 ? `valla / vaya / baya` : `hecho / echo / hechoo`}</strong>`,
-                    options: i % 2 === 0 ? [
-                        { text: "vaya", correct: true },
-                        { text: "valla", correct: false },
-                        { text: "baya", correct: false }
-                    ] : [
-                        { text: "hecho", correct: true },
-                        { text: "echo", correct: false },
-                        { text: "hechoo", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! La palabra es ${i % 2 === 0 ? '"vaya" (del verbo ir)' : '"hecho" (del verbo hacer)'}.`,
-                    feedbackIncorrect: `Incorrecto. La palabra correcta es ${i % 2 === 0 ? '"vaya" (verbo ir)' : '"hecho" (verbo hacer)'}.`
-                }))
+                basic: Array.from({ length: 50 }, (_, i) => {
+                    const words = [
+                        { correct: "árbol", incorrect: ["arbol", "arból", "árbòl"] },
+                        { correct: "río", incorrect: ["rio", "ríó", "rìo"] },
+                        { correct: "pájaro", incorrect: ["pajaro", "pájaró", "pàjaro"] }
+                    ];
+                    const idx = i % words.length;
+                    const options = [{ text: words[idx].correct, correct: true }, ...words[idx].incorrect.map(w => ({ text: w, correct: false }))];
+                    return {
+                        id: i + 1,
+                        question: `¿Cuál es la palabra correctamente acentuada? <strong>${[words[idx].correct, ...words[idx].incorrect].join(" / ")}</strong>`,
+                        options: options.sort(() => Math.random() - 0.5),
+                        feedbackCorrect: `¡Correcto! La palabra es "${words[idx].correct}".`,
+                        feedbackIncorrect: `Incorrecto. La palabra correcta es "${words[idx].correct}" (regla de acentuación).`
+                    };
+                }),
+                intermediate: Array.from({ length: 50 }, (_, i) => {
+                    const sentences = [
+                        { sentence: "Ana fue al mercado compró pan.", correct: "Ana fue al mercado, compró pan." },
+                        { sentence: "Estudio mucho siempre aprendo algo nuevo.", correct: "Estudio mucho, siempre aprendo algo nuevo." },
+                        { sentence: "Llegaré tarde avísame si hay cambios.", correct: "Llegaré tarde, avísame si hay cambios." }
+                    ];
+                    const idx = i % sentences.length;
+                    return {
+                        id: i + 1,
+                        question: `Coloca la puntuación correcta: <strong>${sentences[idx].sentence}</strong>`,
+                        options: [
+                            { text: sentences[idx].correct, correct: true },
+                            { text: sentences[idx].sentence.replace(" ", ", "), correct: false },
+                            { text: sentences[idx].sentence.replace(" ", "; "), correct: false },
+                            { text: sentences[idx].sentence, correct: false }
+                        ].sort(() => Math.random() - 0.5),
+                        feedbackCorrect: `¡Correcto! La oración lleva una coma.`,
+                        feedbackIncorrect: `Incorrecto. La oración correcta es "${sentences[idx].correct}".`
+                    };
+                }),
+                advanced: Array.from({ length: 50 }, (_, i) => {
+                    const words = [
+                        { correct: "vaya", incorrect: ["baya", "valla", "balla"] },
+                        { correct: "hecho", incorrect: ["echo", "hechoo", "echó"] },
+                        { correct: "sé", incorrect: ["se", "sè", "see"] }
+                    ];
+                    const idx = i % words.length;
+                    const options = [{ text: words[idx].correct, correct: true }, ...words[idx].incorrect.map(w => ({ text: w, correct: false }))];
+                    return {
+                        id: i + 1,
+                        question: `Selecciona la palabra correctamente escrita: <strong>${[words[idx].correct, ...words[idx].incorrect].join(" / ")}</strong>`,
+                        answer: words[idx].correct,
+                        options: null, // Text input
+                        feedbackCorrect: `¡Correcto! La palabra es "${words[idx].correct}".`,
+                        feedbackIncorrect: `Incorrecto. La palabra correcta es "${words[idx].correct}".`
+                    };
+                })
             },
             reading: {
-                basic: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Lee el texto: <strong>${i % 2 === 0 ? `El sol brilla y los pájaros cantan.` : `El perro corre en el parque.`}</strong> ¿Qué hace ${i % 2 === 0 ? `los pájaros` : `el perro`}?`,
-                    options: i % 2 === 0 ? [
-                        { text: "cantan", correct: true },
-                        { text: "brillan", correct: false },
-                        { text: "vuelan", correct: false }
-                    ] : [
-                        { text: "corre", correct: true },
-                        { text: "ladra", correct: false },
-                        { text: "duerme", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! ${i % 2 === 0 ? 'Los pájaros cantan.' : 'El perro corre.'}`,
-                    feedbackIncorrect: `Incorrecto. Lee el texto: ${i % 2 === 0 ? 'los pájaros cantan.' : 'el perro corre.'}`
-                })),
-                intermediate: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Lee: <strong>${i % 2 === 0 ? `Ana quería ser doctora desde niña. Estudió mucho y logró su sueño.` : `Pedro viajó a la montaña. Allí vio paisajes increíbles.`}</strong> ¿Qué logró ${i % 2 === 0 ? `Ana` : `Pedro`}?`,
-                    options: i % 2 === 0 ? [
-                        { text: "Ser doctora", correct: true },
-                        { text: "Estudiar poco", correct: false },
-                        { text: "Viajar", correct: false }
-                    ] : [
-                        { text: "Ver paisajes", correct: true },
-                        { text: "Escalar montañas", correct: false },
-                        { text: "Estudiar", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! ${i % 2 === 0 ? 'Ana logró ser doctora.' : 'Pedro vio paisajes.'}`,
-                    feedbackIncorrect: `Incorrecto. Revisa el texto: ${i % 2 === 0 ? 'Ana logró ser doctora.' : 'Pedro vio paisajes.'}`
-                })),
-                advanced: Array.from({ length: 50 }, (_, i) => ({
-                    id: i + 1,
-                    question: `Lee: <strong>${i % 2 === 0 ? `La tecnología avanza rápidamente, transformando la sociedad.` : `La literatura refleja los valores culturales de una época.`}</strong> ¿Qué refleja/transforma según el texto?`,
-                    options: i % 2 === 0 ? [
-                        { text: "La tecnología transforma la sociedad", correct: true },
-                        { text: "La tecnología refleja valores", correct: false },
-                        { text: "La sociedad avanza lentamente", correct: false }
-                    ] : [
-                        { text: "La literatura refleja valores culturales", correct: true },
-                        { text: "La literatura transforma la época", correct: false },
-                        { text: "Los valores cambian la literatura", correct: false }
-                    ],
-                    feedbackCorrect: `¡Correcto! ${i % 2 === 0 ? 'La tecnología transforma la sociedad.' : 'La literatura refleja valores culturales.'}`,
-                    feedbackIncorrect: `Incorrecto. Revisa el texto: ${i % 2 === 0 ? 'La tecnología transforma la sociedad.' : 'La literatura refleja valores culturales.'}`
-                }))
+                basic: Array.from({ length: 50 }, (_, i) => {
+                    const texts = [
+                        { text: "El gato duerme en la cama.", question: "¿Dónde duerme el gato?", answer: "En la cama" },
+                        { text: "Los niños juegan en el patio.", question: "¿Qué hacen los niños?", answer: "Juegan" },
+                        { text: "La flor crece en el jardín.", question: "¿Dónde crece la flor?", answer: "En el jardín" }
+                    ];
+                    const idx = i % texts.length;
+                    return {
+                        id: i + 1,
+                        question: `Lee: <strong>${texts[idx].text}</strong> ${texts[idx].question}`,
+                        options: [
+                            { text: texts[idx].answer, correct: true },
+                            { text: texts[(idx + 1) % texts.length].answer, correct: false },
+                            { text: texts[(idx + 2) % texts.length].answer, correct: false },
+                            { text: "No se menciona", correct: false }
+                        ].sort(() => Math.random() - 0.5),
+                        feedbackCorrect: `¡Correcto! La respuesta es "${texts[idx].answer}".`,
+                        feedbackIncorrect: `Incorrecto. La respuesta correcta es "${texts[idx].answer}".`
+                    };
+                }),
+                intermediate: Array.from({ length: 50 }, (_, i) => {
+                    const texts = [
+                        { text: "Lucía soñaba con viajar a París. Ahorró dinero y compró su boleto.", question: "¿Qué compró Lucía?", answer: "Un boleto" },
+                        { text: "El equipo practicó toda la semana. El sábado ganaron el partido.", question: "¿Cuándo ganaron el partido?", answer: "El sábado" },
+                        { text: "Marta estudió biología. Ahora trabaja en un laboratorio.", question: "¿Dónde trabaja Marta?", answer: "En un laboratorio" }
+                    ];
+                    const idx = i % texts.length;
+                    return {
+                        id: i + 1,
+                        question: `Lee: <strong>${texts[idx].text}</strong> ${texts[idx].question}`,
+                        options: [
+                            { text: texts[idx].answer, correct: true },
+                            { text: texts[(idx + 1) % texts.length].answer, correct: false },
+                            { text: texts[(idx + 2) % texts.length].answer, correct: false },
+                            { text: "No se menciona", correct: false }
+                        ].sort(() => Math.random() - 0.5),
+                        feedbackCorrect: `¡Correcto! La respuesta es "${texts[idx].answer}".`,
+                        feedbackIncorrect: `Incorrecto. La respuesta correcta es "${texts[idx].answer}".`
+                    };
+                }),
+                advanced: Array.from({ length: 50 }, (_, i) => {
+                    const texts = [
+                        { text: "La globalización ha transformado las economías, conectando mercados mundiales.", question: "¿Qué ha transformado la globalización?", answer: "Las economías" },
+                        { text: "La poesía de Quevedo refleja la crítica social del Siglo de Oro.", question: "¿Qué refleja la poesía de Quevedo?", answer: "La crítica social" },
+                        { text: "El cambio climático afecta los ecosistemas, aumentando la temperatura global.", question: "¿Qué afecta el cambio climático?", answer: "Los ecosistemas" }
+                    ];
+                    const idx = i % texts.length;
+                    return {
+                        id: i + 1,
+                        question: `Lee: <strong>${texts[idx].text}</strong> ${texts[idx].question}`,
+                        options: [
+                            { text: texts[idx].answer, correct: true },
+                            { text: texts[(idx + 1) % texts.length].answer, correct: false },
+                            { text: texts[(idx + 2) % texts.length].answer, correct: false },
+                            { text: "No se menciona", correct: false }
+                        ].sort(() => Math.random() - 0.5),
+                        feedbackCorrect: `¡Correcto! La respuesta es "${texts[idx].answer}".`,
+                        feedbackIncorrect: `Incorrecto. La respuesta correcta es "${texts[idx].answer}".`
+                    };
+                })
             }
         };
 
         // Navigation handling
         function showPage(pageId) {
-            // Skip external links
             if (['home', 'math', 'science', 'social'].includes(pageId)) return;
             document.querySelectorAll('.subject-page').forEach(page => {
                 page.classList.remove('active');
             });
             document.querySelector(`#${pageId}-page`).classList.add('active');
-            // Initialize exercises for subject pages
             if (['grammar', 'spelling', 'reading'].includes(pageId)) {
                 showSubject(pageId);
             }
@@ -1310,7 +1338,7 @@
             page.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
             const container = page.querySelector(`#${tabId}-exercises`);
             container.classList.add('active');
-            loadExercise(subject, tabId.split('-')[1], 1); // Load first exercise
+            loadExercise(subject, tabId.split('-')[1], 1);
         }
 
         function loadExercise(subject, level, exerciseId) {
@@ -1349,10 +1377,8 @@
 
         // Event listeners
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize home page
             showPage('home');
 
-            // Navigation links (only for language page)
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1361,7 +1387,6 @@
                 });
             });
 
-            // Subject practice buttons
             document.querySelectorAll('.practice-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1370,7 +1395,6 @@
                 });
             });
 
-            // Exercise tabs
             document.querySelectorAll('.exercise-tab').forEach(tab => {
                 tab.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1380,7 +1404,6 @@
                 });
             });
 
-            // Check answer buttons
             document.querySelectorAll('.check-answer-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const container = btn.closest('.exercise-container');
@@ -1395,7 +1418,7 @@
                         isCorrect = selectedOption && selectedOption.dataset.correct === 'true';
                     } else {
                         const input = container.querySelector('.input-answer');
-                        isCorrect = input && input.value.trim() === exercise.answer;
+                        isCorrect = input && input.value.trim().toLowerCase() === exercise.answer.toLowerCase();
                     }
                     
                     container.querySelector(isCorrect ? '.feedback-correct' : '.feedback-incorrect').style.display = 'block';
@@ -1416,7 +1439,6 @@
                 });
             });
 
-            // Option selection
             document.querySelectorAll('.options-container').forEach(container => {
                 container.addEventListener('click', (e) => {
                     if (e.target.classList.contains('option')) {
@@ -1426,7 +1448,6 @@
                 });
             });
 
-            // Next question buttons
             document.querySelectorAll('.next-question-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const container = btn.closest('.exercise-container');
@@ -1438,7 +1459,6 @@
                 });
             });
 
-            // Login modal
             const loginModal = document.getElementById('loginModal');
             document.getElementById('loginBtn').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1457,7 +1477,6 @@
                 loginModal.style.display = 'none';
             });
 
-            // User dropdown
             document.getElementById('userAvatar').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('userDropdown').classList.toggle('active');
